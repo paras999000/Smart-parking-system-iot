@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Smart Car Parking - Commercial Dashboard</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            color: #f8fafc;
+        }
+        
+        /* Glassmorphism styling */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Neon Glow Effects */
+        .glow-red {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6), inset 0 0 10px rgba(239, 68, 68, 0.4);
+        }
+        .glow-green {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.6), inset 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+        
+        .pulse-soft {
+            animation: pulse-op 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-op {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+
+        /* Smooth Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.2); 
+        }
+    </style>
+</head>
+<body class="min-h-screen pt-8 pb-16 px-4 md:px-8 flex flex-col items-center overflow-x-hidden">
+    <!-- Header -->
+    <header class="w-full max-w-7xl mb-10 flex flex-col items-center justify-center text-center border-b border-slate-800 pb-8">
+        <div>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-emerald-400 pb-2">
+                Parking System
+            </h1>
+            <p class="text-slate-400 mt-2 text-lg font-medium">Real-time facility monitoring & intelligent slot mapping</p>
+        </div>
+        <div class="mt-5 flex items-center justify-center gap-3 text-sm font-semibold text-emerald-400 bg-emerald-950/30 px-5 py-2.5 rounded-full border border-emerald-900/50 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 pulse-soft glow-green"></span>
+            Sensors Online
+        </div>
+    </header>
+
+    <!-- Main Dashboard Layout -->
+    <main class="w-full max-w-7xl flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+        
+        <!-- Left Column: Circular Dial Indicator & Summary -->
+        <div class="w-full lg:w-[32%] flex flex-col gap-6 lg:sticky lg:top-8">
+            <div class="glass-panel p-8 rounded-[2rem] flex flex-col items-center justify-center relative overflow-hidden">
+                <h2 class="text-2xl font-bold mb-10 text-slate-100 tracking-wide w-full text-center">Facility Occupancy</h2>
+                
+                <!-- Dial container -->
+                <div class="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full flex items-center justify-center bg-slate-900 shadow-[inset_0_10px_30px_rgba(0,0,0,0.8)] border border-slate-800">
+                    <div id="dial-ring" class="absolute inset-3 rounded-full border-[10px] border-slate-900 transition-all duration-1000 ease-out" 
+                         style="background: conic-gradient(#10b981 var(--fill, 0%), #1e293b 0);"></div>
+                    <div class="absolute inset-[20px] bg-slate-900 rounded-full flex flex-col items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.9)] z-10 border border-slate-800/80">
+                        <span class="text-7xl font-extrabold tracking-tighter text-white drop-shadow-lg" id="count-display">0</span>
+                        <div class="text-slate-500 font-bold uppercase tracking-widest text-xs mt-3 border-t border-slate-800/80 w-1/2 text-center pt-2">of 10 Filled</div>
+                    </div>
+                </div>
+
+                <!-- Stats summary below dial -->
+                <div class="w-full mt-10 grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50 shadow-inner">
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 glow-green"></span>
+                            <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Available</span>
+                        </div>
+                        <div class="text-4xl font-extrabold text-emerald-400" id="available-display">10</div>
+                    </div>
+                    <div class="bg-slate-900/50 p-4 rounded-2xl border border-slate-700/50 shadow-inner">
+                        <div class="flex items-center justify-center gap-2 mb-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 glow-red"></span>
+                            <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Occupied</span>
+                        </div>
+                        <div class="text-4xl font-extrabold text-red-500" id="filled-display">0</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Alert / Feature Box -->
+            <div class="glass-panel p-6 rounded-3xl flex items-center gap-4 bg-gradient-to-br from-indigo-900/20 to-blue-900/10">
+                <div class="p-3 bg-blue-500/20 rounded-xl border border-blue-500/30 text-blue-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="text-slate-200 font-bold text-sm uppercase tracking-wider">Fast Refresh</h3>
+                    <p class="text-slate-500 text-sm mt-0.5">Live syncing every second</p>
+                </div>
+            </div>
+
+            <!-- Interactive Simulation Panel -->
+            <div class="glass-panel p-6 rounded-3xl flex flex-col gap-3 bg-slate-900/40 border border-slate-800">
+                <h3 class="text-slate-300 font-bold text-sm uppercase tracking-wider flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                    Simulation Controls
+                </h3>
+                <div class="grid grid-cols-2 gap-2 mt-1">
+                    <button onclick="simulateAction('/api/entry')" class="py-2.5 px-3 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 active:scale-95">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Car Entry
+                    </button>
+                    <button onclick="simulateAction('/api/exit')" class="py-2.5 px-3 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 active:scale-95">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                        Car Exit
+                    </button>
+                </div>
+                <button onclick="simulateAction('/api/reset')" class="w-full py-2 bg-slate-800 hover:bg-slate-700/80 text-slate-300 border border-slate-700 rounded-xl text-xs font-semibold transition active:scale-95">
+                    Reset Counter
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Column: 10 Rows of Slots -->
+        <div class="w-full lg:w-[68%] glass-panel p-6 sm:p-8 rounded-[2rem]">
+            <div class="flex justify-between items-center mb-8 pb-4 border-b border-slate-800">
+                <h2 class="text-2xl font-bold text-slate-100 flex items-center gap-3">
+                    <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                    Parking Bay Status
+                </h2>
+                <span class="text-xs font-bold text-slate-400 px-4 py-1.5 bg-slate-900 rounded-full uppercase tracking-widest border border-slate-700/50 shadow-inner">Zone Alpha</span>
+            </div>
+            
+            <div id="slots-container" class="flex flex-col gap-4">
+                <!-- Slots populated dynamically -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const slotsContainer = document.getElementById("slots-container");
+        
+        // Setup initial structure for 10 slots
+        for (let i = 1; i <= 10; i++) {
+            const slot = document.createElement("div");
+            slot.id = "slot-" + i;
+            slot.className = "group relative w-full p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border transition-all duration-500 bg-slate-900 cursor-default";
+            
+            slot.innerHTML = `
+                <div class="flex items-center gap-4 sm:gap-6">
+                    <div id="indicator-${i}" class="w-14 h-14 shrink-0 rounded-[1rem] flex items-center justify-center font-bold text-xl sm:text-2xl transition-all duration-500 border">
+                        P${i}
+                    </div>
+                    <div>
+                        <div class="text-lg sm:text-xl font-bold text-slate-200">Parking Slot ${i.toString().padStart(2, '0')}</div>
+                        <div id="desc-${i}" class="text-sm sm:text-base font-medium transition-colors duration-500 mt-0.5 text-slate-500">Initializing...</div>
+                    </div>
+                </div>
+                <div class="flex items-center w-full sm:w-auto mt-2 sm:mt-0">
+                    <div id="status-badge-${i}" class="w-full sm:w-auto text-center px-6 py-2 rounded-full text-xs sm:text-sm font-bold border transition-all duration-500 uppercase tracking-widest text-slate-400">
+                        Scanning
+                    </div>
+                </div>
+            `;
+            slotsContainer.appendChild(slot);
+        }
+
+        async function loadData() {
+            try {
+                let res = await fetch("/data");
+                let data = await res.json();
+
+                let filledCount = data.counter;
+                let maxCount = data.max;
+                let availableCount = maxCount - filledCount;
+
+                // 1. Update Dial and Stats
+                document.getElementById("count-display").innerText = filledCount;
+                document.getElementById("filled-display").innerText = filledCount;
+                document.getElementById("available-display").innerText = availableCount;
+
+                const percentage = (filledCount / maxCount) * 100;
+                const ring = document.getElementById("dial-ring");
+                
+                // Color ring based on fill status (Red if nearly full, Green otherwise)
+                let ringColor = "#10b981"; // Emerald
+                if (percentage >= 80) ringColor = "#ef4444"; // Red
+                else if (percentage >= 50) ringColor = "#f59e0b"; // Amber
+                
+                ring.style.background = `conic-gradient(${ringColor} var(--fill, 0%), #1e293b 0)`;
+                // Delay to allow CSS transition to catch the variable change
+                setTimeout(() => {
+                    ring.style.setProperty('--fill', percentage + '%');
+                }, 50);
+
+                // 2. Update Slots visually
+                for (let i = 1; i <= maxCount; i++) {
+                    const slot = document.getElementById("slot-" + i);
+                    const indicator = document.getElementById("indicator-" + i);
+                    const desc = document.getElementById("desc-" + i);
+                    const badge = document.getElementById("status-badge-" + i);
+                    
+                    if (slot && indicator && desc && badge) {
+                        if (i <= filledCount) {
+                            // RED -> OCCUPIED
+                            slot.className = "group relative w-full p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-slate-900 to-red-950/20 border-l-4 border-l-red-500 border-t border-r border-b border-red-900/30 transition-all duration-300 shadow-md";
+                            
+                            indicator.className = "w-14 h-14 shrink-0 rounded-[1rem] flex items-center justify-center font-extrabold text-xl sm:text-2xl transition-all duration-300 bg-slate-900 text-red-500 border border-red-500/50 glow-red shadow-lg";
+                            
+                            desc.innerHTML = "<span class='text-red-400'>Vehicle detected</span> &bull; Status: Unavailable";
+                            
+                            badge.className = "w-full sm:w-auto text-center px-6 py-2 rounded-full text-xs sm:text-sm font-bold bg-slate-900 text-red-400 border border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.2)] transition-all duration-300 uppercase tracking-widest";
+                            badge.innerText = "Occupied";
+                        } else {
+                            // GREEN -> AVAILABLE
+                            slot.className = "group relative w-full p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-slate-900 to-emerald-950/20 border-l-4 border-l-emerald-500 border-t border-r border-b border-emerald-900/30 transition-all duration-300 hover:bg-slate-800 hover:-translate-y-1 shadow-md";
+                            
+                            indicator.className = "w-14 h-14 shrink-0 rounded-[1rem] flex items-center justify-center font-extrabold text-xl sm:text-2xl transition-all duration-300 bg-slate-900 text-emerald-400 border border-emerald-500/50 glow-green shadow-lg";
+                            
+                            desc.innerHTML = "<span class='text-emerald-400'>Ready for parking</span> &bull; Status: Clear";
+                            
+                            badge.className = "w-full sm:w-auto text-center px-6 py-2 rounded-full text-xs sm:text-sm font-bold bg-slate-900 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all duration-300 uppercase tracking-widest";
+                            badge.innerText = "Available";
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to load data:", err);
+            }
+        }
+
+        async function simulateAction(endpoint) {
+            try {
+                await fetch(endpoint);
+                await loadData();
+            } catch (err) {
+                console.error("Simulation action failed:", err);
+            }
+        }
+
+        setInterval(loadData, 1000);
+        // Initial quick load
+        setTimeout(loadData, 100);
+    </script>
+</body>
+</html>
