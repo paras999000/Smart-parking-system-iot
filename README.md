@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="images/college_banner.jpeg" alt="S.B. Jain Institute of Technology, Management and Research" width="100%"/>
-</p>
-
 # 🚗 IoT Smart Parking System
 
 <p align="center">
@@ -130,7 +126,6 @@ Smart-parking-system-iot/
 │   └── SmartParkingDashboard.jsx       # Reactive Tailwind + Lucide dashboard component
 │
 ├── images/                             # Real project execution photos & screenshots
-│   ├── college_banner.jpeg             # S.B. Jain Institute banner
 │   ├── hardware_setup_vacant.jpeg      # Physical prototype (Vacant state)
 │   ├── hardware_setup_full.jpeg        # Physical prototype (Full state)
 │   ├── pico_micropython_shell.jpeg     # Thonny MicroPython shell logs
@@ -139,10 +134,6 @@ Smart-parking-system-iot/
 │   ├── express_dashboard_bay_status_1.jpeg # Bay status (1 occupied)
 │   ├── express_dashboard_bay_status_full.jpeg # Bay status (all occupied)
 │   └── express_dashboard_bay_status_full_slots.jpeg # Bay P5-P10 neon view
-│
-└── docs/                               # Assessment reports & project documents
-    ├── Gaurav_Havelikar_Report.pdf
-    └── Himanshu_Makhe_Report.pdf
 ```
 
 ---
